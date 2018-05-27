@@ -106,7 +106,7 @@ def send_mail(send_from, send_to, subject, message, files=[],
     smtp.quit()
 
 # try:
-read_mail(send_from=sender,
+send_mail(send_from=sender,
               send_to=TO,
               subject=SUBJECT,
               message=TEXT,
