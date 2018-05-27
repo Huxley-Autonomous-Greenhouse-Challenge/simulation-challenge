@@ -1,6 +1,10 @@
+import imaplib
 import smtplib
+import sys
 import json
+import os
 import os.path as op
+import email
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
@@ -17,6 +21,48 @@ passwd = credentials['password']
 TO = 'GreenhouseSimulation@gmail.com'
 SUBJECT = 'FastSimReq'
 TEXT = 'Here is a message from python.'
+
+
+def read_mail(send_from, send_to, subject, message, files=[],
+              server="localhost", port=587, username='', password='',
+              use_tls=True):
+    imapSession = imaplib.IMAP4_SSL(server)
+    typ, accountDetails = imapSession.login(username, password)
+    if typ != 'OK':
+        print ('Not able to sign in!')
+        raise
+
+    imapSession.select('inbox')
+    typ, data = imapSession.search(None, '(SUBJECT "RE: FastSimReq")')
+    if typ != 'OK':
+        print ('Error searching Inbox.')
+        raise
+
+    # Iterating over all emails
+    for msgId in data[0].split():
+        typ, messageParts = imapSession.fetch(msgId, '(RFC822)')
+        if typ != 'OK':
+            print ('Error fetching mail.')
+            raise
+
+        emailBody = messageParts[0][1]
+        mail = email.message_from_bytes(emailBody)
+        for part in mail.walk():
+            if part.get_content_maintype() == 'multipart':
+                continue
+            if part.get('Content-Disposition') is None:
+                continue
+            fileName = part.get_filename()
+            print(fileName)
+            if bool(fileName):
+                filePath = os.path.join(os.getcwd(), fileName)
+                if not os.path.isfile(filePath) :
+                    print (fileName)
+                    fp = open(filePath, 'wb')
+                    fp.write(part.get_payload(decode=True))
+                    fp.close()
+    imapSession.close()
+    imapSession.logout()
 
 def send_mail(send_from, send_to, subject, message, files=[],
               server="localhost", port=587, username='', password='',
@@ -59,18 +105,18 @@ def send_mail(send_from, send_to, subject, message, files=[],
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
-try:
-    send_mail(send_from=sender,
+# try:
+read_mail(send_from=sender,
               send_to=TO,
               subject=SUBJECT,
               message=TEXT,
-              files=[],
+              files=['SetpointInterface.xlsx'],
               server='smtp.gmail.com',
               port=587,
               username=sender,
               password=passwd,
               use_tls=True   )
-    print ('email sent')
-except:
-    print ('error sending mail')
+ #    print ('email sent')
+# except:
+#     print ('error sending mail')
 
