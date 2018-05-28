@@ -3,14 +3,22 @@ import tensorflow as tf
 import os
 import math
 import numpy as np
-from email_utils import send_mail
-from email_utils import read_mail
+from email_utils import send_mail, read_mail
 from time import sleep
+from xlsx_utils import load_xlsx, get_variables, set_variables, print_sheet
 
-send_mail()
-print('Request sent waiting for response')
-sleep(300)
-read_mail()
+v1 = get_variables()
+v2 = set_variables(v1)
+
+if v1 == v2:
+    print('winning')
+else:
+    print('losing')
+
+# send_mail()
+# print('Request sent waiting for response')
+# sleep(30)
+# read_mail()
 
 cropOutput_filePath = os.path.join(os.getcwd(), 'cropModelOutput.csv')
 climate_filePath = os.path.join(os.getcwd(), 'climateModelOutput.csv')
