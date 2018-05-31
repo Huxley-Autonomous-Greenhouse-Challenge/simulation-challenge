@@ -3,16 +3,16 @@ import time
 
 def main():
   print("Test Driver")
-  request_counter = 13
+  request_counter = 16
   attempts = 0
   send_mail(counter=request_counter)
   wait = True
-  #time.sleep(180)
-  print("Waiting 10 seconds before initial email check")
-  time.sleep(10)
+  print("Waiting 30 seconds before initial email check")
+  time.sleep(30)
   while wait:
       try:
           attempts = attempts + 1
+          print ("Read attempt {0}".format(attempts))
           read_mail(request_counter)
       except Exception as e:
           if attempts >= 10:

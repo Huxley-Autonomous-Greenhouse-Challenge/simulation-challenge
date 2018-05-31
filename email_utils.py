@@ -58,6 +58,14 @@ def read_mail(counter=1,
 
     emailBody = messageParts[0][1]
     mail = email.message_from_bytes(emailBody)
+    #Create a folder to store the results of the run
+    directory = os.getcwd().rsplit('\\', 1)[0] + "\\results\\run" + str(counter)
+    print("directory: {0}".format(directory))
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print("Created directory {0}".format(directory))
+    else:
+        print("Directory {0} already exists".format(directory))
 
     print("Subject: {0}".format(mail['Subject']))
     for part in mail.walk():
@@ -68,13 +76,13 @@ def read_mail(counter=1,
         fileName = part.get_filename()
         print(fileName)
         if bool(fileName):
-            filePath = os.path.join(os.getcwd(), fileName)
+            filePath = os.path.join(directory, fileName)
             if not os.path.isfile(filePath) :
                 print (fileName)
                 fp = open(filePath, 'wb')
                 fp.write(part.get_payload(decode=True))
                 fp.close()
-                imapSession.close()
+    imapSession.close()
     imapSession.logout()
 
 def send_mail(counter=1,
@@ -108,7 +116,7 @@ def send_mail(counter=1,
     msg['To'] = COMMASPACE.join(send_to)
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject + str(counter)
-    print("Sending with subject {0}".format(msg['Subject']))
+    print("Sending with to {1} with subject {0}".format(msg['Subject'], msg['To']))
 
     msg.attach(MIMEText(message))
 
