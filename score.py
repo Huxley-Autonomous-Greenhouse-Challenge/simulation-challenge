@@ -13,9 +13,9 @@ def score():
     climate_filePath = os.path.join(os.getcwd(), 'climateModelOutput.csv')
     profit_filePath = os.path.join(os.getcwd(), 'profit.csv');
 
-    crop_dataframe = pd.read_csv(cropOutput_filePath)
-    climate_dataframe = pd.read_csv(climate_filePath)
-    profit_dataframe = pd.read_csv(profit_filePath)
+    crop_dataframe = pd.read_csv(cropOutput_filePath, header=None)
+    climate_dataframe = pd.read_csv(climate_filePath, header=None)
+    profit_dataframe = pd.read_csv(profit_filePath, header=None)
 
     crop_cols = [
         'DAYNR',
