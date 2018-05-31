@@ -14,60 +14,60 @@ def get_variables():
     sheet, wb = load_xlsx()
     variables = []
 
-    for cellObj in sheet['B3':'O22']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B3':'O22']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    for cellObj in sheet['B23':'O42']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B23':'O42']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    for cellObj in sheet['B43':'F49']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B43':'F49']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B50'].value)
+    # variables.append(sheet['B50'].value)
     variables.append(sheet['B51'].value)
 
-    for cellObj in sheet['B52':'C54']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B52':'C54']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B55'].value)
+    # variables.append(sheet['B55'].value)
 
-    for cellObj in sheet['B57':'C60']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B57':'C60']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B61'].value)
+    # variables.append(sheet['B61'].value)
 
-    for cellObj in sheet['B62':'F66']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B62':'F66']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B67'].value)
+    # variables.append(sheet['B67'].value)
 
-    for cellObj in sheet['B68':'H71']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B68':'H71']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B72'].value)
+    # variables.append(sheet['B72'].value)
 
-    for cellObj in sheet['B73':'C75']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B73':'C75']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B76'].value)
+    # variables.append(sheet['B76'].value)
 
-    for cellObj in sheet['B77':'C79']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B77':'C79']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
-    variables.append(sheet['B80'].value)
+    # variables.append(sheet['B80'].value)
 
-    for cellObj in sheet['B81':'C83']:
-        for cell in cellObj:
-            variables.append(cell.value)
+    # for cellObj in sheet['B81':'C83']:
+    #     for cell in cellObj:
+    #         variables.append(cell.value)
 
     return(variables)
 
