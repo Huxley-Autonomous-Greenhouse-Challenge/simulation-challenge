@@ -19,11 +19,13 @@ passwd = credentials['password']
 
 # TODO: include Setpoint excel file to send
 TO = 'GreenhouseSimulation@gmail.com'
+#TO = 'frank.marcus@grnlight.ca'
 SUBJECT = 'FastSimReq'
 TEXT = 'Here is a message from python.'
 
 
-def read_mail(send_from=sender,
+def read_mail(counter=1,
+              send_from=sender,
               send_to=TO,
               subject=SUBJECT,
               message=TEXT,
@@ -40,12 +42,14 @@ def read_mail(send_from=sender,
         raise
 
     imapSession.select('inbox')
-    typ, data = imapSession.search(None, '(SUBJECT "RE: FastSimReq")')
+    subject_str = '(SUBJECT "RE: FastSimReq' + str(counter) + '")'
+    print("Searching for subject {0}".format(subject_str))
+    typ, data = imapSession.search(None, subject_str)
     if typ != 'OK':
         print ('Error searching Inbox.')
         raise
 
-    print(data)
+    print("len: {1} data: {0}".format(data, len(data)))
     # Get the latest message.
     typ, messageParts = imapSession.fetch(data[0].split()[-1], '(RFC822)')
     if typ != 'OK':
@@ -54,6 +58,8 @@ def read_mail(send_from=sender,
 
     emailBody = messageParts[0][1]
     mail = email.message_from_bytes(emailBody)
+
+    print("Subject: {0}".format(mail['Subject']))
     for part in mail.walk():
         if part.get_content_maintype() == 'multipart':
             continue
@@ -71,7 +77,8 @@ def read_mail(send_from=sender,
                 imapSession.close()
     imapSession.logout()
 
-def send_mail(send_from=sender,
+def send_mail(counter=1,
+              send_from=sender,
               send_to=TO,
               subject=SUBJECT,
               message=TEXT,
@@ -95,11 +102,13 @@ def send_mail(send_from=sender,
         password (str): server auth password
         use_tls (bool): use TLS mode
     """
+    print("User: {0} Passwd: {1}".format(username, password))
     msg = MIMEMultipart()
     msg['From'] = send_from
     msg['To'] = COMMASPACE.join(send_to)
     msg['Date'] = formatdate(localtime=True)
-    msg['Subject'] = subject
+    msg['Subject'] = subject + str(counter)
+    print("Sending with subject {0}".format(msg['Subject']))
 
     msg.attach(MIMEText(message))
 
@@ -112,10 +121,10 @@ def send_mail(send_from=sender,
                         'attachment; filename="{}"'.format(op.basename(path)))
         msg.attach(part)
 
+    print("Sending email")
     smtp = smtplib.SMTP(server, port)
     if use_tls:
         smtp.starttls()
     smtp.login(username, password)
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
-
