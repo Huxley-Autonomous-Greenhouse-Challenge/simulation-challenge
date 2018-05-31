@@ -1,5 +1,6 @@
 import sys
 import openpyxl as xl
+import xlrd
 import pandas as pd
 import csv
 
@@ -8,6 +9,36 @@ def load_xlsx(filename = 'SetpointInterfaceBatchFill_template.xlsx'):
     for sheet in wb:
         if (sheet.title == 'MyValues'):
             return(sheet, wb)
+
+def load_xls(filename = 'SetpointInterfaceBatchFill.xls'):
+    frame = []
+    wb = xlrd.open_workbook(filename)
+    sheet_names = wb.sheet_names()
+    print('Sheet Names', sheet_names)
+    xl_sheet = wb.sheet_by_name(sheet_names[3])
+    #get cell 2, 1
+    num_cols = xl_sheet.ncols
+    print("num_cols: {0}".format(num_cols))
+    print("num_rows: {0}".format(xl_sheet.nrows))
+
+    num_cols = xl_sheet.ncols   # Number of columns
+    for row_idx in range(2, xl_sheet.nrows - 2):    # Iterate through rows
+        frame_row = []
+        print ('-'*40)
+        print ('Row: %s' % row_idx)   # Print row number
+        for col_idx in range(1, 15):  # Iterate through columns
+            cell_obj = xl_sheet.cell(row_idx, col_idx)  # Get cell object by row, col
+            frame_row.append(cell_obj.value)
+            #print ('Column: [%s] cell_obj: [%s]' % (col_idx, cell_obj))
+        #print(frame_row)
+        frame.append(frame_row)
+
+    print(frame)
+    return frame
+
+
+load_xls()
+
 
 def load_csv(filename = 'MyValuesB3O85.txt'):
     with open('file.csv', 'r') as f:
