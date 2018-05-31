@@ -45,6 +45,7 @@ def read_mail(send_from=sender,
         print ('Error searching Inbox.')
         raise
 
+    print(data)
     # Get the latest message.
     typ, messageParts = imapSession.fetch(data[0].split()[-1], '(RFC822)')
     if typ != 'OK':

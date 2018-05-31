@@ -8,6 +8,8 @@ def load_xlsx(filename = 'SetpointInterfaceBatchFill.xlsx'):
         if (sheet.title == 'MyValues'):
             return(sheet, wb)
 
+# Note: this is all the variables. TOO MANY TO OPTIMIZE
+# We should remove some of the variables so there is a reasonable amount to do linear regression on.
 def get_variables():
     sheet, wb = load_xlsx()
     variables = []
@@ -147,7 +149,7 @@ def set_variables(variables):
             cell.value = variables.pop()
             variables.append(cell.value)
 
-    return(variables)
+    return(variables, sheet)
 
 def print_sheet():
     ### Below is some code to print out the values of the spreadsheet with some notes.
