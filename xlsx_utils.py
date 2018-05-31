@@ -1,6 +1,7 @@
 import sys
 import openpyxl as xl
 import pandas as pd
+import csv
 
 def load_xlsx(filename = 'SetpointInterfaceBatchFill_template.xlsx'):
     wb = xl.load_workbook(filename)
@@ -8,66 +9,71 @@ def load_xlsx(filename = 'SetpointInterfaceBatchFill_template.xlsx'):
         if (sheet.title == 'MyValues'):
             return(sheet, wb)
 
+def load_csv(filename = 'MyValuesB3O85.txt'):
+    with open('file.csv', 'r') as f:
+        reader = csv.reader(f)
+        your_list = list(reader)
+
 # Note: this is all the variables. TOO MANY TO OPTIMIZE
 # We should remove some of the variables so there is a reasonable amount to do linear regression on.
 def get_variables():
     sheet, wb = load_xlsx()
     variables = []
 
-    # for cellObj in sheet['B3':'O22']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B3':'O22']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # for cellObj in sheet['B23':'O42']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B23':'O42']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # for cellObj in sheet['B43':'F49']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B43':'F49']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B50'].value)
+    variables.append(sheet['B50'].value)
     variables.append(sheet['B51'].value)
 
-    # for cellObj in sheet['B52':'C54']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B52':'C54']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B55'].value)
+    variables.append(sheet['B55'].value)
 
-    # for cellObj in sheet['B57':'C60']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B57':'C60']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B61'].value)
+    variables.append(sheet['B61'].value)
 
-    # for cellObj in sheet['B62':'F66']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B62':'F66']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B67'].value)
+    variables.append(sheet['B67'].value)
 
-    # for cellObj in sheet['B68':'H71']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B68':'H71']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B72'].value)
+    variables.append(sheet['B72'].value)
 
-    # for cellObj in sheet['B73':'C75']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B73':'C75']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B76'].value)
+    variables.append(sheet['B76'].value)
 
-    # for cellObj in sheet['B77':'C79']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B77':'C79']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
-    # variables.append(sheet['B80'].value)
+    variables.append(sheet['B80'].value)
 
-    # for cellObj in sheet['B81':'C83']:
-    #     for cell in cellObj:
-    #         variables.append(cell.value)
+    for cellObj in sheet['B81':'C83']:
+        for cell in cellObj:
+            variables.append(cell.value)
 
     return(variables)
 
