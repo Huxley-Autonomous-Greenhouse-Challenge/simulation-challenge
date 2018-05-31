@@ -2,7 +2,7 @@ import sys
 import openpyxl as xl
 import pandas as pd
 
-def load_xlsx(filename = 'SetpointInterfaceBatchFill.xlsx'):
+def load_xlsx(filename = 'SetpointInterfaceBatchFill_template.xlsx'):
     wb = xl.load_workbook(filename)
     for sheet in wb:
         if (sheet.title == 'MyValues'):
@@ -236,4 +236,3 @@ def print_sheet():
     for cellObj in sheet['B81':'C83']:
         for cell in cellObj:
                 print(cell.coordinate, cell.value)
-

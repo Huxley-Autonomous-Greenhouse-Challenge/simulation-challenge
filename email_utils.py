@@ -18,8 +18,8 @@ sender = credentials['email']
 passwd = credentials['password']
 
 # TODO: include Setpoint excel file to send
-TO = 'GreenhouseSimulation@gmail.com'
-#TO = 'frank.marcus@grnlight.ca'
+#TO = 'GreenhouseSimulation@gmail.com'
+TO = 'frank.marcus@grnlight.ca'
 SUBJECT = 'FastSimReq'
 TEXT = 'Here is a message from python.'
 
@@ -59,7 +59,7 @@ def read_mail(counter=1,
     emailBody = messageParts[0][1]
     mail = email.message_from_bytes(emailBody)
     #Create a folder to store the results of the run
-    directory = os.getcwd().rsplit('\\', 1)[0] + "\\results\\run" + str(counter)
+    directory = os.getcwd().rsplit('\\', 1)[0] + "\\results\\run_" + str(counter)
     print("directory: {0}".format(directory))
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -74,7 +74,6 @@ def read_mail(counter=1,
         if part.get('Content-Disposition') is None:
             continue
         fileName = part.get_filename()
-        print(fileName)
         if bool(fileName):
             filePath = os.path.join(directory, fileName)
             if not os.path.isfile(filePath) :
