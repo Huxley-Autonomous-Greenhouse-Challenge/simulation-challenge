@@ -1,4 +1,4 @@
-impotrt pandas as pd
+import pandas as pd
 import tensorflow as tf
 import os
 import math
@@ -18,7 +18,7 @@ my_optimizer = tf.contrib.estimator.clip_gradients_by_norm(my_optimizer, 5.0)
 profit_filePath = os.path.join(os.getcwd(), 'profit.csv')
 profit_dataframe = pd.read_csv(profit_filePath, header=None)
 
-# Define the input feature: total_rooms.
+# Define the input features
 my_features_filepath = os.path.join(os.getcwd(), 'params.csv')
 my_features = pd.read_csv(my_features_filepath)
 
@@ -27,8 +27,7 @@ target.columns = [
     'Profit'
 ]
 
-# TODO pick features to optimize
-# Configure a numeric feature column for total_rooms.
+# Configure a numeric feature column for each of the input features.
 feature_columns = [tf.feature_column.numeric_column(column) for column in my_features.columns]
 
 # Configure the linear regression model with our feature columns and optimizer.
@@ -39,7 +38,7 @@ linear_regressor = tf.estimator.LinearRegressor(
     optimizer=my_optimizer
 )
 
-def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
+def my_input_fn(features, targets, batch_size=1, num_epochs=None):
     """Trains a linear regression model of one feature.
     Args:
       features: pandas DataFrame of features
@@ -63,15 +62,20 @@ def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     return features, labels
 
 
-_ = linear_regressor.train(
+model = linear_regressor.train(
     input_fn = lambda:my_input_fn(my_features, target),
     steps=100
 )
 
+# results = model.evaluate(input_fn=lambda: my_input_fn(
+#     my_features, target, num_epochs=1))
+# for key in sorted(results):
+#   print('%s: %s' % (key, results[key]))
+
 # Create an input function for predictions.
-# Note: Since we're making just one prediction for each example, we don't 
+# Note: Since we're making just one prediction for each example, we don't
 # need to repeat or shuffle the data here.
-prediction_input_fn =lambda: my_input_fn(my_features, target, num_epochs=1, shuffle=False)
+prediction_input_fn =lambda: my_input_fn(my_features, target, num_epochs=1)
 
 # Call predict() on the linear_regressor to make predictions.
 predictions = linear_regressor.predict(input_fn=prediction_input_fn)
@@ -84,27 +88,3 @@ mean_squared_error = metrics.mean_squared_error(predictions, target)
 root_mean_squared_error = math.sqrt(mean_squared_error)
 print("Mean Squared Error (on training data): %0.3f" % mean_squared_error)
 print("Root Mean Squared Error (on training data): %0.3f" % root_mean_squared_error)
-
-# def main(simulations=10):
-#     # loop over the desired number of epochs
-#     for epoch in np.arange(0, simulations):
-#         print ("Run #" + str(epoch))
-        # v1 = get_variables()
-        # v2 = set_variables(v1)
-
-        # # Check to make sure we are getting and setting the same variables
-        # if v1 != v2:
-        #     print('Warning! get_variables() is returning different results than set variables().')
-
-        # # pick the next set of variables
-        # # send_mail()
-        # # print('Request sent waiting for response')
-        # # sleep(30)
-        # read_mail()
-
-        # profit_filePath = os.path.join(os.getcwd(), 'profit.csv');
-        # profit_dataframe = pd.read_csv(profit_filePath)
-
-        # print(profit_dataframe)
-
-# main()
