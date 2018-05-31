@@ -14,38 +14,22 @@ counter = 1
 def get_params():
     MyValues_filePath =  os.path.join(os.getcwd(), 'MyValuesB3O85.txt')
     myValues_dataframe = pd.read_csv(MyValues_filePath, header=None)
-    print(myValues_dataframe)
+    # Maybe just use csv to read the file.
     params = []
     for list in myValues_dataframe.values:
         for value in list:
             params.append(value)
-    return(params)
+    return(params, myValues_dataframe)
 
-def set_params(params):
-    i = 0
-    row = 0
-    new_params = [[]]
-    for param in params:
-        if i >= 14:
-            i = 0
-            row += 1
-            new_params.append([])
-        else:
-            i += 1
-            new_params[row].append(param)
-    print(pd.DataFrame(new_params))
+def set_params(df):
+    filepath = os.path.join(os.getcwd(), 'MyValuesB3O85.txt')
+    df.to_csv(path_or_buf=filepath, encoding='ascii', header=False, index=False)
 
-initial_params = get_params()
-v2_params = set_params(initial_params)
+initial_params, df = get_params()
 
-    # with open("MyValuesB3O85", "wb") as f:
-    #     writer = csv.writer(f)
-    #     writer.writerows(a)
-
-def loop(params):
+def loop(params, df):
+    set_params(df)
     # take params, write them to spreadsheet
-    print(params)
-
     send_mail(files=['MyValuesB3O85.txt'])
     sleep(45)
     read_mail(counter=counter)
@@ -55,11 +39,11 @@ def loop(params):
 
     return -profit_dataframe[0][0]
 
-# initial_guess = [1, 1, 1]
-# result = optimize.minimize(f, initial_guess)
-# print(result.x)
-# if result.success:
-#     fitted_params = result.x
-#     print(fitted_params)
-# else:
-#     raise ValueError(result.message)
+initial_guess, params_dataframe = get_params()
+result = optimize.minimize(loop, initial_guess, params_dataframe)
+print(result.x)
+if result.success:
+    fitted_params = result.x
+    print(fitted_params)
+else:
+    raise ValueError(result.message)
