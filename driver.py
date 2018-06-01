@@ -1,7 +1,11 @@
 from email_utils import send_mail, read_mail
+import optimize as op
 import time
 import argparse
 import os
+import shutil
+import scipy.optimize as optimize
+import pandas as pd
 
 def main():
   print("Test Driver")
@@ -24,12 +28,60 @@ def main():
 
   #latest_result_path(args)
   request_counter = args.counter
-  if args.single:
+  '''if args.single:
       execute_run(args, request_counter)
   else:
       while True:
           execute_run(args, request_counter)
-          request_counter = request_counter + 1
+          request_counter = request_counter + 1'''
+  execute_run2(args, request_counter)
+
+counter = 0
+def execute_run2(args, request_counter):
+    global counter
+    while True:
+        initial_params, initial_df = op.get_params()
+        print('Starting run {1} with initial initial params: {0}'.format(initial_params, request_counter))
+        result = optimize.minimize(loop, initial_params, initial_df)
+        # Capture the last set of results as a "check
+        # MyValuesB3O85.txt
+
+        print(result.x)
+        if result.success:
+            fitted_params = result.x
+            print(fitted_params)
+        else:
+            raise ValueError(result.message)
+
+def loop(params, df):
+    global counter
+    counter = counter + 1
+    op.set_params(df)
+    # take params, write them to spreadsheet
+    print("Counter: {0}".format(counter))
+    send_mail(counter=counter, files=['MyValuesB3O85.txt'])
+    time.sleep(15)
+    retries = 0
+    while retries < 10:
+        try:
+            print("Checking for response email")
+            directory = read_mail(counter=counter)
+        except IndexError:
+            print("Email has not yet arrived, retrying {0} of 10".format(retries))
+            time.sleep(15)
+            retries = retries + 1
+            continue
+        break;
+
+    print("Run directory: {0}".format(directory))
+    shutil.copyfile('MyValuesB3O85.txt', directory + '\\MyValuesB3O85.txt')
+    #frame = load_xls(directory)
+
+    #profit_filePath = os.path.join(os.getcwd(), 'profit.csv')
+    profit_filePath = os.path.join(directory, 'profit.csv')
+    profit_dataframe = pd.read_csv(profit_filePath, header=None)
+
+    return -profit_dataframe[0][0]
 
 def latest_result_path(args):
     if args.output_dir:

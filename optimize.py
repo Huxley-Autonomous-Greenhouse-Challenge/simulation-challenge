@@ -34,9 +34,8 @@ def set_params(df):
     filepath = os.path.join(os.getcwd(), 'MyValuesB3O85.txt')
     df.to_csv(path_or_buf=filepath, encoding='ascii', header=False, index=False)
 
-params, frame = get_xls_params()
-
-print(frame)
+#params, frame = get_xls_params()
+#print(frame)
 '''initial_params, df = get_params()
 
 def loop(params, df):

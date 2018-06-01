@@ -10,7 +10,7 @@ def load_xlsx(filename = 'SetpointInterfaceBatchFill_template.xlsx'):
         if (sheet.title == 'MyValues'):
             return(sheet, wb)
 
-def load_xls(filename = 'SetpointInterfaceBatchFill.xls'):
+def load_xls(path = None, filename = 'SetpointInterfaceBatchFill.xls'):
     frame = []
     wb = xlrd.open_workbook(filename)
     sheet_names = wb.sheet_names()
@@ -18,8 +18,6 @@ def load_xls(filename = 'SetpointInterfaceBatchFill.xls'):
     xl_sheet = wb.sheet_by_name(sheet_names[3])
     #get cell 2, 1
     num_cols = xl_sheet.ncols
-    print("num_cols: {0}".format(num_cols))
-    print("num_rows: {0}".format(xl_sheet.nrows))
 
     num_cols = xl_sheet.ncols   # Number of columns
     for row_idx in range(2, xl_sheet.nrows - 2):    # Iterate through rows
@@ -33,11 +31,8 @@ def load_xls(filename = 'SetpointInterfaceBatchFill.xls'):
         #print(frame_row)
         frame.append(frame_row)
 
-    print(frame)
+    #print(frame)
     return frame
-
-
-load_xls()
 
 
 def load_csv(filename = 'MyValuesB3O85.txt'):
