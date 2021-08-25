@@ -79,7 +79,7 @@ software-center-aptd-plugins==0.0.0
 system-service==0.3
 tables==3.2.2
 tensorboard==1.8.0
-tensorflow==1.8.0
+tensorflow==2.5.1
 termcolor==1.1.0
 ubuntu-drivers-common==0.0.0
 ufw==0.35
